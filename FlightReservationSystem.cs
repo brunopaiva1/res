@@ -8,9 +8,14 @@ class FlightReservationSystem
     public FlightReservationSystem()
     {
         this.flights = new List<Flight>();
-        flights.Add(new Flight("AA123", "Nova York", 100));
-        flights.Add(new Flight("BB456", "Los Angeles", 150));
-        flights.Add(new Flight("CC789", "Chicago", 120));
+        InitializeFlights();
+    }
+
+    private void InitializeFlights()
+    {
+        AddFlight("AA123", "Nova York", 100);
+        AddFlight("BB456", "Los Angeles", 150);
+        AddFlight("CC789", "Chicago", 120);
     }
 
     public void DisplayFlights()
@@ -40,6 +45,47 @@ class FlightReservationSystem
         {
             Flight flight = flights[flightIndex];
             flight.CancelSeat(passengerName);
+        }
+        else
+        {
+            Console.WriteLine("Voo selecionado inválido.");
+        }
+    }
+
+    public void AddFlight(string flightNumber, string destination, int capacity)
+    {
+        if (!flights.Exists(flight => flight.FlightNumber == flightNumber))
+        {
+            Flight newFlight = new Flight(flightNumber, destination, capacity);
+            flights.Add(newFlight);
+            Console.WriteLine("Novo voo adicionado com sucesso: " + flightNumber + " para " + destination + ".");
+        }
+        else
+        {
+            Console.WriteLine("O número do voo já está em uso. Por favor, escolha outro número.");
+        }
+    }
+
+    public void ViewFlightDetails(int flightIndex)
+    {
+        if (flightIndex >= 0 && flightIndex < flights.Count)
+        {
+            Flight flight = flights[flightIndex];
+            flight.DisplayDetails();
+        }
+        else
+        {
+            Console.WriteLine("Voo selecionado inválido.");
+        }
+    }
+
+    public void ViewPassengers(int flightIndex)
+    {
+        if (flightIndex >= 0 && flightIndex < flights.Count)
+        {
+            Flight flight = flights[flightIndex];
+            Console.WriteLine("Lista de Passageiros para o Voo " + flight.FlightNumber + ":");
+            Console.WriteLine(string.Join(", ", flight.Passengers));
         }
         else
         {

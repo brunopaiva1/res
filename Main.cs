@@ -11,64 +11,127 @@ class MainClass
             Console.WriteLine("\nBem-vindo ao Sistema de Reserva de Passagens Aéreas");
             reservationSystem.DisplayFlights();
 
-            Console.Write("\nEscolha um voo (ou 'q' para sair): ");
+            Console.WriteLine("\nEscolha uma opção:");
+            Console.WriteLine("1. Reservar um voo");
+            Console.WriteLine("2. Cancelar reserva");
+            Console.WriteLine("3. Adicionar novo voo");
+            Console.WriteLine("4. Visualizar detalhes de um voo");
+            Console.WriteLine("5. Visualizar lista de passageiros de um voo");
+            Console.WriteLine("6. Sair");
+
+            Console.Write("Opção: ");
             string choice = Console.ReadLine();
-            if (choice.ToLower() == "q")
+
+            switch (choice)
             {
-                break;
-            }
-
-            try
-            {
-                int flightNumber = int.Parse(choice);
-                if (flightNumber >= 1 && flightNumber <= reservationSystem.GetNumberOfFlights())
-                {
-                    Flight selectedFlight = reservationSystem.GetFlight(flightNumber - 1);
-
-                    selectedFlight.DisplayDetails();
-
-                    Console.Write("Digite seu nome: ");
-                    string passengerName = Console.ReadLine();
-
-                    Console.WriteLine("Escolha uma opção:");
-                    Console.WriteLine("1. Reservar assento");
-                    Console.WriteLine("2. Cancelar reserva");
-
-                    int option = int.Parse(Console.ReadLine());
-
-                    switch (option)
-                    {
-                        case 1:
-                            if (selectedFlight.BookSeat(passengerName))
-                            {
-                                Console.WriteLine("Reserva realizada com sucesso.");
-                            }
-                            else
-                            {
-                                Console.WriteLine("Falha ao realizar reserva.");
-                            }
-                            break;
-                        case 2:
-                            reservationSystem.CancelReservation(flightNumber - 1, passengerName);
-                            break;
-                        default:
-                            Console.WriteLine("Opção inválida.");
-                            break;
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Escolha inválida. Por favor, digite o número do voo.");
-                }
-            }
-            catch (FormatException)
-            {
-                Console.WriteLine("Escolha inválida. Por favor, digite o número do voo.");
-            }
-            catch (IndexOutOfRangeException)
-            {
-                Console.WriteLine("Escolha inválida. Por favor, digite o número do voo.");
+                case "1":
+                    ReserveFlight(reservationSystem);
+                    break;
+                case "2":
+                    CancelReservation(reservationSystem);
+                    break;
+                case "3":
+                    AddNewFlight(reservationSystem);
+                    break;
+                case "4":
+                    ViewFlightDetails(reservationSystem);
+                    break;
+                case "5":
+                    ViewPassengers(reservationSystem);
+                    break;
+                case "6":
+                    Console.WriteLine("Saindo...");
+                    return;
+                default:
+                    Console.WriteLine("Opção inválida.");
+                    break;
             }
         }
+    }
+
+    public static void ReserveFlight(FlightReservationSystem reservationSystem)
+    {
+        Console.WriteLine("\nReservar um voo:");
+        reservationSystem.DisplayFlights();
+        Console.Write("\nEscolha um voo: ");
+        int flightIndex = int.Parse(Console.ReadLine()) - 1;
+
+        if (flightIndex >= 0 && flightIndex < reservationSystem.GetNumberOfFlights())
+        {
+            Flight selectedFlight = reservationSystem.GetFlight(flightIndex);
+
+            Console.Write("Digite seu nome: ");
+            string passengerName = Console.ReadLine();
+
+            if (selectedFlight.BookSeat(passengerName))
+            {
+                Console.WriteLine("Reserva realizada com sucesso.");
+            }
+            else
+            {
+                Console.WriteLine("Falha ao realizar reserva.");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Voo selecionado inválido.");
+        }
+    }
+
+    public static void CancelReservation(FlightReservationSystem reservationSystem)
+    {
+        Console.WriteLine("\nCancelar reserva:");
+        reservationSystem.DisplayFlights();
+        Console.Write("\nEscolha um voo: ");
+        int flightIndex = int.Parse(Console.ReadLine()) - 1;
+
+        if (flightIndex >= 0 && flightIndex < reservationSystem.GetNumberOfFlights())
+        {
+            Flight selectedFlight = reservationSystem.GetFlight(flightIndex);
+
+            Console.Write("Digite seu nome: ");
+            string passengerName = Console.ReadLine();
+
+            reservationSystem.CancelReservation(flightIndex, passengerName);
+        }
+        else
+        {
+            Console.WriteLine("Voo selecionado inválido.");
+        }
+    }
+
+    public static void AddNewFlight(FlightReservationSystem reservationSystem)
+    {
+        Console.WriteLine("\nAdicionar novo voo:");
+        Console.Write("Digite o número do voo: ");
+        string flightNumber = Console.ReadLine();
+
+        Console.Write("Digite o destino: ");
+        string destination = Console.ReadLine();
+
+        Console.Write("Digite a capacidade do voo: ");
+        int capacity = int.Parse(Console.ReadLine());
+
+        reservationSystem.AddFlight(flightNumber, destination, capacity);
+    }
+
+    public static void ViewFlightDetails(FlightReservationSystem reservationSystem)
+    {
+        Console.WriteLine("\nVisualizar detalhes de um voo:");
+        reservationSystem.DisplayFlights();
+        Console.Write("\nEscolha um voo: ");
+        int flightIndex = int.Parse(Console.ReadLine()) - 1;
+
+        reservationSystem.ViewFlightDetails(flightIndex);
+    }
+
+    public static void ViewPassengers(FlightReservationSystem reservationSystem)
+    {
+        Console.WriteLine("\nVisualizar lista de passageiros de um voo:");
+        reservationSystem.DisplayFlights();
+        Console.Write("\nEscolha um voo: ");
+        int flightIndex = int.Parse(Console.ReadLine()) - 1;
+
+        reservationSystem.ViewPassengers(flightIndex);
     }
 }

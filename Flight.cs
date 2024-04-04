@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 class Flight
 {
@@ -29,6 +30,11 @@ class Flight
     public int Capacity
     {
         get { return capacity; }
+    }
+
+    public List<string> Passengers
+    {
+        get { return passengers; }
     }
 
     public int AvailableSeats()
@@ -82,4 +88,3 @@ class Flight
         Console.WriteLine("Lista de Passageiros: " + string.Join(", ", passengers));
     }
 }
-
