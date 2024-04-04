@@ -73,4 +73,13 @@ class Flight
             Console.WriteLine("Passageiro " + passengerName + " não encontrado no voo " + flightNumber + ".");
         }
     }
+
+    public void DisplayDetails()
+    {
+        Console.WriteLine("Detalhes do Voo " + flightNumber + ":");
+        Console.WriteLine("Destino: " + destination);
+        Console.WriteLine("Assentos disponíveis: " + AvailableSeats());
+        Console.WriteLine("Lista de Passageiros: " + string.Join(", ", passengers));
+    }
 }
+
