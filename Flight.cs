@@ -88,7 +88,6 @@ class Flight
             Console.WriteLine("Passageiro " + passengerName + " não encontrado no voo " + flightNumber + ".");
         }
     }
-
     public void DisplayDetails()
     {
         Console.WriteLine("Detalhes do Voo " + flightNumber + ":");
