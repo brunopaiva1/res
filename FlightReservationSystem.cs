@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System;
+using System.Linq;
 
 class FlightReservationSystem
 {
@@ -31,6 +33,8 @@ class FlightReservationSystem
 
     public Flight GetFlight(int index)
     {
+        Contract.Requires(index >= 0 && index < flights.Count);
+
         return flights[index];
     }
 
@@ -41,20 +45,20 @@ class FlightReservationSystem
 
     public void CancelReservation(int flightIndex, string passengerName)
     {
-        if (flightIndex >= 0 && flightIndex < flights.Count)
-        {
-            Flight flight = flights[flightIndex];
-            flight.CancelSeat(passengerName);
-        }
-        else
-        {
-            Console.WriteLine("Voo selecionado inválido.");
-        }
+        Contract.Requires(flightIndex >= 0 && flightIndex < flights.Count);
+        Contract.Requires(!string.IsNullOrEmpty(passengerName));
+
+        Flight flight = flights[flightIndex];
+        flight.CancelSeat(passengerName);
     }
 
     public void AddFlight(string flightNumber, string destination, int capacity)
     {
-        if (!flights.Exists(flight => flight.FlightNumber == flightNumber))
+        Contract.Requires(!string.IsNullOrEmpty(flightNumber));
+        Contract.Requires(!string.IsNullOrEmpty(destination));
+        Contract.Requires(capacity > 0);
+
+        if (!flights.Any(f => f.FlightNumber == flightNumber))
         {
             Flight newFlight = new Flight(flightNumber, destination, capacity);
             flights.Add(newFlight);
@@ -66,30 +70,21 @@ class FlightReservationSystem
         }
     }
 
-    public void ViewFlightDetails(int flightIndex)
+
+public void ViewFlightDetails(int flightIndex)
     {
-        if (flightIndex >= 0 && flightIndex < flights.Count)
-        {
-            Flight flight = flights[flightIndex];
-            flight.DisplayDetails();
-        }
-        else
-        {
-            Console.WriteLine("Voo selecionado inválido.");
-        }
+        Contract.Requires(flightIndex >= 0 && flightIndex < flights.Count);
+
+        Flight flight = flights[flightIndex];
+        flight.DisplayDetails();
     }
 
     public void ViewPassengers(int flightIndex)
     {
-        if (flightIndex >= 0 && flightIndex < flights.Count)
-        {
-            Flight flight = flights[flightIndex];
-            Console.WriteLine("Lista de Passageiros para o Voo " + flight.FlightNumber + ":");
-            Console.WriteLine(string.Join(", ", flight.Passengers));
-        }
-        else
-        {
-            Console.WriteLine("Voo selecionado inválido.");
-        }
+        Contract.Requires(flightIndex >= 0 && flightIndex < flights.Count);
+
+        Flight flight = flights[flightIndex];
+        Console.WriteLine("Lista de Passageiros para o Voo " + flight.FlightNumber + ":");
+        Console.WriteLine(string.Join(", ", flight.Passengers));
     }
 }

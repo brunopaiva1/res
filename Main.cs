@@ -56,25 +56,18 @@ class MainClass
         Console.Write("\nEscolha um voo: ");
         int flightIndex = int.Parse(Console.ReadLine()) - 1;
 
-        if (flightIndex >= 0 && flightIndex < reservationSystem.GetNumberOfFlights())
+        Flight selectedFlight = reservationSystem.GetFlight(flightIndex);
+
+        Console.Write("Digite seu nome: ");
+        string passengerName = Console.ReadLine();
+
+        if (selectedFlight.BookSeat(passengerName))
         {
-            Flight selectedFlight = reservationSystem.GetFlight(flightIndex);
-
-            Console.Write("Digite seu nome: ");
-            string passengerName = Console.ReadLine();
-
-            if (selectedFlight.BookSeat(passengerName))
-            {
-                Console.WriteLine("Reserva realizada com sucesso.");
-            }
-            else
-            {
-                Console.WriteLine("Falha ao realizar reserva.");
-            }
+            Console.WriteLine("Reserva realizada com sucesso.");
         }
         else
         {
-            Console.WriteLine("Voo selecionado inválido.");
+            Console.WriteLine("Falha ao realizar reserva.");
         }
     }
 
@@ -85,19 +78,10 @@ class MainClass
         Console.Write("\nEscolha um voo: ");
         int flightIndex = int.Parse(Console.ReadLine()) - 1;
 
-        if (flightIndex >= 0 && flightIndex < reservationSystem.GetNumberOfFlights())
-        {
-            Flight selectedFlight = reservationSystem.GetFlight(flightIndex);
+        Console.Write("Digite seu nome: ");
+        string passengerName = Console.ReadLine();
 
-            Console.Write("Digite seu nome: ");
-            string passengerName = Console.ReadLine();
-
-            reservationSystem.CancelReservation(flightIndex, passengerName);
-        }
-        else
-        {
-            Console.WriteLine("Voo selecionado inválido.");
-        }
+        reservationSystem.CancelReservation(flightIndex, passengerName);
     }
 
     public static void AddNewFlight(FlightReservationSystem reservationSystem)

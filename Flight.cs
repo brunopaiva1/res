@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 
 class Flight
@@ -11,6 +12,10 @@ class Flight
 
     public Flight(string flightNumber, string destination, int capacity)
     {
+        Contract.Requires(!string.IsNullOrEmpty(flightNumber));
+        Contract.Requires(!string.IsNullOrEmpty(destination));
+        Contract.Requires(capacity > 0);
+
         this.flightNumber = flightNumber;
         this.destination = destination;
         this.capacity = capacity;
@@ -54,6 +59,8 @@ class Flight
 
     public bool BookSeat(string passengerName)
     {
+        Contract.Requires(!string.IsNullOrEmpty(passengerName));
+
         if (IsSeatAvailable())
         {
             passengers.Add(passengerName);
@@ -69,6 +76,8 @@ class Flight
 
     public void CancelSeat(string passengerName)
     {
+        Contract.Requires(!string.IsNullOrEmpty(passengerName));
+
         if (HasPassenger(passengerName))
         {
             passengers.Remove(passengerName);
