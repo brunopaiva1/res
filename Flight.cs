@@ -83,6 +83,7 @@ class Flight
         {
             passengers.Remove(passengerName);
             Console.WriteLine("Reserva cancelada para " + passengerName + " no voo " + flightNumber + ".");
+            Contract.Ensures(passengers.Count == Contract.OldValue(passengers.Count) - 1);
         }
         else
         {
