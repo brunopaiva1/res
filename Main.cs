@@ -116,6 +116,6 @@ class MainClass
         Console.Write("\nEscolha um voo: ");
         int flightIndex = int.Parse(Console.ReadLine()) - 1;
 
-        reservationSystem.ViewPassengers(flightIndex);
+        reservationSystem.ViewPassengers(reservationSystem.GetFlights(), flightIndex);
     }
 }

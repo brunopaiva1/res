@@ -90,11 +90,17 @@ class Flight
             Console.WriteLine("Passageiro " + passengerName + " não encontrado no voo " + flightNumber + ".");
         }
     }
-    public void DisplayDetails()
+    public void DisplayDetails(List<Flight> flights, int flightIndex)
     {
-        Console.WriteLine("Detalhes do Voo " + flightNumber + ":");
-        Console.WriteLine("Destino: " + destination);
-        Console.WriteLine("Assentos disponíveis: " + AvailableSeats());
-        Console.WriteLine("Lista de Passageiros: " + string.Join(", ", passengers));
+        Contract.Requires(flights != null);
+        Contract.Requires(flightIndex >= 0 && flightIndex < flights.Count);
+        Contract.Ensures(Contract.Result<bool>() == true);
+
+        Flight flight = flights[flightIndex];
+        Console.WriteLine("Detalhes do Voo " + flight.FlightNumber + ":");
+        Console.WriteLine("Destino: " + flight.Destination);
+        Console.WriteLine("Assentos disponíveis: " + flight.AvailableSeats());
+        Console.WriteLine("Lista de Passageiros: " + string.Join(", ", flight.Passengers));
     }
 }
+

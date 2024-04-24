@@ -38,6 +38,11 @@ class FlightReservationSystem
         return flights[index];
     }
 
+    public List<Flight> GetFlights()
+    {
+        return flights;
+    }
+
     public int GetNumberOfFlights()
     {
         return flights.Count;
@@ -63,6 +68,7 @@ class FlightReservationSystem
             Flight newFlight = new Flight(flightNumber, destination, capacity);
             flights.Add(newFlight);
             Console.WriteLine("Novo voo adicionado com sucesso: " + flightNumber + " para " + destination + ".");
+            Contract.Ensures(flights.Any(f => f.FlightNumber == flightNumber));
         }
         else
         {
@@ -71,20 +77,23 @@ class FlightReservationSystem
     }
 
 
-public void ViewFlightDetails(int flightIndex)
+    public void ViewFlightDetails(int flightIndex)
     {
         Contract.Requires(flightIndex >= 0 && flightIndex < flights.Count);
 
         Flight flight = flights[flightIndex];
-        flight.DisplayDetails();
+        flight.DisplayDetails(flights, flightIndex);
     }
 
-    public void ViewPassengers(int flightIndex)
+    public void ViewPassengers(List<Flight> flights, int flightIndex)
     {
+        Contract.Requires(flights != null);
         Contract.Requires(flightIndex >= 0 && flightIndex < flights.Count);
 
         Flight flight = flights[flightIndex];
         Console.WriteLine("Lista de Passageiros para o Voo " + flight.FlightNumber + ":");
         Console.WriteLine(string.Join(", ", flight.Passengers));
+
+        Contract.Ensures(Contract.Result<bool>() == true);
     }
 }
