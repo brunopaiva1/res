@@ -65,6 +65,7 @@ class Flight
         {
             passengers.Add(passengerName);
             Console.WriteLine("Reserva confirmada para " + passengerName + " no voo " + flightNumber + ".");
+            Contract.Ensures(passengers.Count == Contract.OldValue(passengers.Count) + 1);
             return true;
         }
         else
