@@ -102,5 +102,10 @@ class Flight
         Console.WriteLine("Assentos disponíveis: " + flight.AvailableSeats());
         Console.WriteLine("Lista de Passageiros: " + string.Join(", ", flight.Passengers));
     }
+    protected void ObjectInvariant()
+    {
+        Contract.Invariant(capacity > 0);
+        Contract.Invariant(passengers != null); 
+    }
 }
 
